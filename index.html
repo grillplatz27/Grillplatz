@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Grillplatz">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#2e9e5b">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Grillplatz</title>
+<style>
+:root{--bg:#fff;--tx:#1c1c1e;--mu:#6b6b70;--ln:#dcdce0;--we:#f1f1f4;--ho:#fde8e8;--fe:#fff4d6;--hot:#b3261e;--fet:#8a5a00;--bar:#f7f7f9;--g:#2e9e5b;--b:#e0559c;--p:#12a8a8;--ac:#0a6cff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#111113;--tx:#f2f2f5;--mu:#9a9aa2;--ln:#2e2e33;--we:#1b1b1f;--ho:#3a1c1c;--fe:#3a3015;--hot:#ff8a80;--fet:#f2c66b;--bar:#1a1a1d;--ac:#4d94ff}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px -apple-system,system-ui,"Helvetica Neue",Arial,sans-serif;padding-bottom:70px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bar);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bar);z-index:5;border-bottom:1px solid var(--ln)}
+.yr{display:flex;align-items:center;justify-content:space-between;padding:6px 6px}
+.yr b{font-size:19px;min-width:130px;text-align:center}.yr button{font-size:24px;background:none;border:0;color:var(--ac);padding:2px 12px}
+.yr button:disabled{opacity:.25}.yr .g{display:flex;align-items:center}.yr .sp{width:48px}
+.cols{display:grid;grid-template-columns:62px 40px 40px 1fr;font-size:11px;color:var(--mu);padding:3px 0;text-align:center}
+.cols span:last-child{text-align:left;padding-left:6px}
+.day{display:grid;grid-template-columns:62px 1fr;border-bottom:1px solid var(--ln)}
+.day.we{background:var(--we)}.day.ho{background:var(--ho)}.day.fe:not(.ho){background:var(--fe)}
+.dc{padding:8px 4px;text-align:center;border:0;background:none;color:inherit;font:inherit;border-right:1px solid var(--ln)}
+.dc small{display:block;color:var(--mu);font-size:12px}.dc strong{font-size:17px}
+.dr{min-width:0}
+.tags{display:flex;flex-wrap:wrap;gap:4px;padding:5px 6px 0}
+.tags i{font-style:normal;font-size:12px;border-radius:5px;padding:1px 6px}
+.t-ho{color:var(--hot);background:rgba(179,38,30,.13)}.t-fe{color:var(--fet);background:rgba(200,140,0,.18)}
+.bk{--c:var(--g);display:grid;grid-template-columns:40px 40px 1fr;align-items:center;margin:4px 6px;border-left:6px solid var(--c);border-radius:6px;background:color-mix(in srgb,var(--c) 20%,var(--bg))}
+.bk.b{--c:var(--b)}.bk.p{--c:var(--p)}
+.bk input{width:22px;height:22px;margin:auto;accent-color:var(--c)}
+.bk .nm{padding:9px 8px;background:none;border:0;color:inherit;font:inherit;text-align:left;min-width:0}
+.bk .nm span{font-size:12px;color:var(--mu);display:block}
+.det{grid-column:1/-1;padding:2px 10px 10px 10px;font-size:15px}
+.det a{color:var(--ac);font-weight:600;text-decoration:none}
+.det button{margin-top:8px;font:inherit;border:1px solid var(--ln);background:var(--bg);color:var(--ac);border-radius:8px;padding:6px 14px}
+.add{margin:4px 6px 6px;font-size:13px;color:var(--ac);background:none;border:0;padding:4px 2px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;overflow-x:auto;background:var(--bar);border-top:1px solid var(--ln);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));gap:6px;z-index:6}
+nav button{flex:none;border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:8px 8px 0 0;padding:8px 12px;font:inherit;font-size:14px}
+nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;z-index:20}
+.ov.on{display:flex}
+.card{background:var(--bg);width:100%;border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));max-height:92%;overflow:auto}
+.card h3{margin:0 0 10px}
+.ty{display:flex;gap:8px;margin-bottom:10px}
+.ty button{--c:var(--g);flex:1;padding:12px 4px;border-radius:10px;border:2px solid var(--c);background:none;color:var(--tx);font:inherit;font-weight:600}
+.ty button.b{--c:var(--b)}.ty button.p{--c:var(--p)}.ty button.on{background:var(--c);color:#fff}
+input[type=text],input[type=tel],input[type=email],input[type=password],textarea{width:100%;font:inherit;font-size:16px;padding:11px;margin-bottom:8px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx)}
+.row{display:flex;gap:8px;margin-top:4px}
+.row button,.mb{flex:1;padding:12px;border-radius:10px;border:0;font:inherit;font-weight:600;background:var(--we);color:var(--tx)}
+.mb{display:block;width:100%;margin-bottom:8px}
+.row .ok{background:var(--ac);color:#fff}.row .del{color:var(--hot)}
+.err{color:var(--hot);font-size:13px;min-height:16px;margin-bottom:6px}
+#lg{position:fixed;inset:0;background:var(--bg);z-index:30;display:none;align-items:center;justify-content:center;padding:24px}
+#lg form{width:100%;max-width:340px}#lg h2{margin:0 0 4px}#lg p{color:var(--mu);margin:0 0 16px}
+#lg .ok{width:100%;padding:13px;border:0;border-radius:10px;background:var(--ac);color:#fff;font:inherit;font-weight:600}
+</style>
+</head>
+<body>
+<header><div class="yr"><button id="mn" aria-label="Menü">⋯</button><div class="g"><button id="py">‹</button><b id="ttl"></b><button id="ny">›</button></div><span class="sp"></span></div>
+<div class="cols"><span>Tag</span><span>Vers.</span><span>Bez.</span><span>Name</span></div></header>
+<main id="m"></main>
+<nav id="nv"></nav>
+<div id="sh" class="ov"><div class="card">
+<h3 id="sht"></h3>
+<div class="ty" id="ty"><button data-t="g">Grillplatz</button><button data-t="b" class="b">BBQ</button><button data-t="p" class="p">Picknick</button></div>
+<input type="text" id="fn" placeholder="Name">
+<input type="tel" id="ft" placeholder="Telefonnummer">
+<textarea id="fb" rows="3" placeholder="Bemerkung"></textarea>
+<div class="err" id="err"></div>
+<div class="row"><button id="cx">Abbrechen</button><button class="del" id="dl">Löschen</button><button class="ok" id="sv">Speichern</button></div>
+</div></div>
+<div id="ms" class="ov"><div class="card">
+<h3>Menü</h3>
+<button class="mb" id="ex">Buchungen sichern (CSV-Datei)</button>
+<button class="mb" id="lo">Abmelden</button>
+<button class="mb" id="mc">Schließen</button>
+</div></div>
+<div id="lg"><form id="lf">
+<h2>Grillplatz</h2><p>Bitte anmelden</p>
+<input type="email" id="le" placeholder="E-Mail" autocomplete="username" required>
+<input type="password" id="lp" placeholder="Passwort" autocomplete="current-password" required>
+<div class="err" id="lerr"></div>
+<button class="ok" type="submit">Anmelden</button>
+</form></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const SB_URL='https://qwbvbzjpygkcusrawnfd.supabase.co',SB_KEY='sb_publishable_Rq0TRQpaC8A-Dr1o9AOXJw_lcqpVgRM';
+let sb=null;try{sb=supabase.createClient(SB_URL,SB_KEY)}catch(e){}
+const $=q=>document.querySelector(q);
+const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const DOW=['So','Mo','Di','Mi','Do','Fr','Sa'];
+const ART={g:'grillplatz',b:'bbq',p:'picknick'},REV={grillplatz:'g',bbq:'b',picknick:'p'},TN={g:'Grillplatz',b:'BBQ',p:'Picknick'};
+const FERIEN={2027:[['2027-01-01','2027-01-06','Weihnachtsferien'],['2027-03-22','2027-04-03','Osterferien'],['2027-05-18','2027-05-18','Pfingstferien'],['2027-07-19','2027-08-31','Sommerferien'],['2027-10-23','2027-11-06','Herbstferien'],['2027-12-24','2027-12-31','Weihnachtsferien']],
+2028:[['2028-01-01','2028-01-08','Weihnachtsferien'],['2028-04-10','2028-04-22','Osterferien'],['2028-07-10','2028-08-22','Sommerferien'],['2028-10-23','2028-11-04','Herbstferien'],['2028-12-21','2028-12-31','Weihnachtsferien']]};
+const p2=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function easter(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=(h+l-7*m+114)%31+1;return new Date(y,mo-1,da)}
+function holidays(y){const E=easter(y),h={},add=(d,n)=>h[iso(d)]=n,o=n=>new Date(y,E.getMonth(),E.getDate()+n);
+add(new Date(y,0,1),'Neujahr');add(o(-2),'Karfreitag');add(o(1),'Ostermontag');add(new Date(y,4,1),'Tag der Arbeit');add(o(39),'Christi Himmelfahrt');add(o(50),'Pfingstmontag');add(o(60),'Fronleichnam');add(new Date(y,9,3),'Tag der Deutschen Einheit');add(new Date(y,10,1),'Allerheiligen');add(new Date(y,11,25),'1. Weihnachtstag');add(new Date(y,11,26),'2. Weihnachtstag');return h}
+const mapRow=r=>({id:r.id,date:r.datum,type:REV[r.art],name:r.name,phone:r.telefon||'',note:r.bemerkung||'',sent:r.verschickt,paid:r.bezahlt});
+let B=[],open=null,edit=null,selT=null,selD=null;
+const now=new Date();let Y=now.getFullYear()==2027||now.getFullYear()==2028?now.getFullYear():2027,M=Y==now.getFullYear()?now.getMonth():0;
+function render(){
+ $('#ttl').textContent=MON[M]+' '+Y;$('#py').disabled=Y<=2027;$('#ny').disabled=Y>=2028;
+ $('#nv').innerHTML=MON.map((n,i)=>'<button data-m="'+i+'" class="'+(i==M?'on':'')+'">'+n.slice(0,3)+'</button>').join('');
+ const H=holidays(Y),F=FERIEN[Y]||[],n=new Date(Y,M+1,0).getDate();let s='';
+ for(let d=1;d<=n;d++){const dt=new Date(Y,M,d),k=iso(dt),w=dt.getDay(),ho=H[k],fe=F.find(f=>k>=f[0]&&k<=f[1]);
+  s+='<div class="day'+(w%6==0?' we':'')+(ho?' ho':'')+(fe?' fe':'')+'"><button class="dc" data-add="'+k+'"><small>'+DOW[w]+'</small><strong>'+p2(d)+'.</strong></button><div class="dr">';
+  if(ho||fe)s+='<div class="tags">'+(ho?'<i class="t-ho">'+ho+'</i>':'')+(fe?'<i class="t-fe">'+fe[2]+'</i>':'')+'</div>';
+  B.filter(x=>x.date==k).forEach(x=>{s+='<div class="bk '+x.type+'"><input type="checkbox" data-s="'+x.id+'"'+(x.sent?' checked':'')+'><input type="checkbox" data-p="'+x.id+'"'+(x.paid?' checked':'')+'><button class="nm" data-o="'+x.id+'">'+esc(x.name)+'<span>'+TN[x.type]+'</span></button>';
+   if(open==x.id)s+='<div class="det">'+(x.phone?'<a href="tel:'+esc(x.phone.replace(/[^\d+]/g,''))+'">📞 '+esc(x.phone)+'</a><br>':'')+(x.note?esc(x.note):'<span style="color:var(--mu)">Keine Bemerkung</span>')+'<br><button data-e="'+x.id+'">Bearbeiten</button></div>';
+   s+='</div>'});
+  s+='<button class="add" data-add="'+k+'">+ Buchung</button></div></div>'}
+ $('#m').innerHTML=s}
+function sheet(date,b){edit=b||null;selD=date;selT=b?b.type:null;const [y,m,d]=date.split('-');
+ $('#sht').textContent=(b?'Buchung bearbeiten':'Neue Buchung')+' · '+d+'.'+m+'.'+y;
+ $('#fn').value=b?b.name:'';$('#ft').value=b?b.phone:'';$('#fb').value=b?b.note:'';$('#err').textContent='';$('#dl').style.display=b?'':'none';$('#sv').disabled=false;
+ document.querySelectorAll('#ty button').forEach(x=>x.classList.toggle('on',x.dataset.t==selT));$('#sh').classList.add('on')}
+async function load(){const {data,error}=await sb.from('buchungen').select('*').order('datum');
+ if(error){alert('Buchungen konnten nicht geladen werden.');return}B=data.map(mapRow);render()}
+async function start(){$('#lg').style.display='none';render();await load()}
+function showLogin(){B=[];$('#m').innerHTML='';$('#lg').style.display='flex'}
+async function tog(el,id,f,col){const val=el.checked,{error}=await sb.from('buchungen').update({[col]:val}).eq('id',id);
+ if(error){el.checked=!val;alert('Speichern fehlgeschlagen. Bitte erneut versuchen.')}else B.find(x=>x.id==id)[f]=val}
+async function saveB(){const nm=$('#fn').value.trim();if(!selT){$('#err').textContent='Bitte zuerst die Buchungsart wählen.';return}if(!nm){$('#err').textContent='Bitte einen Namen eingeben.';return}
+ const v={art:ART[selT],name:nm,telefon:$('#ft').value.trim()||null,bemerkung:$('#fb').value.trim()||null};$('#sv').disabled=true;
+ let r;if(edit)r=await sb.from('buchungen').update(v).eq('id',edit.id).select().single();else r=await sb.from('buchungen').insert({...v,datum:selD}).select().single();
+ if(r.error){$('#err').textContent='Speichern fehlgeschlagen. Bitte erneut versuchen.';$('#sv').disabled=false;return}
+ const x=mapRow(r.data);if(edit)Object.assign(edit,x);else{B.push(x);open=null}
+ $('#sh').classList.remove('on');render()}
+async function delB(){if(!confirm('Buchung wirklich löschen?'))return;const {error}=await sb.from('buchungen').delete().eq('id',edit.id);
+ if(error){$('#err').textContent='Löschen fehlgeschlagen.';return}B=B.filter(x=>x!==edit);$('#sh').classList.remove('on');render()}
+function exp(){const q=s=>'"'+String(s||'').replace(/"/g,'""')+'"',L=['Datum;Buchungsart;Name;Telefon;Bemerkung;Verschickt;Bezahlt'];
+ [...B].sort((a,b)=>a.date<b.date?-1:1).forEach(x=>{const [y,m,d]=x.date.split('-');L.push([d+'.'+m+'.'+y,TN[x.type],q(x.name),q(x.phone),q(x.note),x.sent?'Ja':'Nein',x.paid?'Ja':'Nein'].join(';'))});
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+L.join('\r\n')],{type:'text/csv;charset=utf-8'}));a.download='grillplatz-buchungen-'+iso(new Date())+'.csv';document.body.appendChild(a);a.click();a.remove()}
+document.addEventListener('click',e=>{const t=e.target.closest('button,input');if(!t)return;const D=t.dataset;
+ if(t.id=='py'){Y--;open=null;render()}else if(t.id=='ny'){Y++;open=null;render()}
+ else if(t.id=='mn'){$('#ms').classList.add('on')}else if(t.id=='mc'){$('#ms').classList.remove('on')}
+ else if(t.id=='ex'){exp()}
+ else if(t.id=='lo'){$('#ms').classList.remove('on');sb.auth.signOut().then(showLogin)}
+ else if(D.m!==undefined){M=+D.m;open=null;render();scrollTo(0,0)}
+ else if(D.add){sheet(D.add)}
+ else if(D.o){open=open==D.o?null:D.o;render()}
+ else if(D.e){const b=B.find(x=>x.id==D.e);sheet(b.date,b)}
+ else if(D.s){tog(t,D.s,'sent','verschickt')}
+ else if(D.p){tog(t,D.p,'paid','bezahlt')}
+ else if(D.t&&t.closest('#ty')){selT=D.t;document.querySelectorAll('#ty button').forEach(x=>x.classList.toggle('on',x==t))}
+ else if(t.id=='cx'){$('#sh').classList.remove('on')}
+ else if(t.id=='dl'){delB()}
+ else if(t.id=='sv'){saveB()}});
+$('#lf').addEventListener('submit',async e=>{e.preventDefault();$('#lerr').textContent='';if(!sb){$('#lerr').textContent='Keine Verbindung. Bitte Internet prüfen.';return}
+ const {error}=await sb.auth.signInWithPassword({email:$('#le').value.trim(),password:$('#lp').value});
+ if(error){$('#lerr').textContent='Anmeldung fehlgeschlagen. Bitte E-Mail und Passwort prüfen.';return}$('#lp').value='';start()});
+(async()=>{if(!sb){$('#lg').style.display='flex';$('#lerr').textContent='Keine Verbindung. Bitte Internet prüfen.';return}
+ const {data}=await sb.auth.getSession();if(data.session)start();else $('#lg').style.display='flex'})();
+</script>
+</body>
+</html>
